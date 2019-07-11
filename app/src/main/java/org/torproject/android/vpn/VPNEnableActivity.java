@@ -53,7 +53,7 @@ public class VPNEnableActivity extends AppCompatActivity {
 		startVpnService();
     }
 	 
-	private void startVpnService ()
+	public static void startVpnService ()
 	{
    		if (intent == null)
    		{
