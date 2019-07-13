@@ -793,9 +793,9 @@ public class OrbotMainActivity extends AppCompatActivity
 
                 return; //don't null the setIntent() as we need it later
 
-            case INTENT_ACTION_REQUEST_START_TOR:
-                autoStartFromIntent = true;
-                startTor();
+            case INTENT_ACTION_REQUEST_START_TOR: //So that nobody else has to go through this, INTENT_ACTION_REQUEST_START_TOR is equal to
+                autoStartFromIntent = true;       //org.torproject.android.START_TOR
+                startTor();                       //and is NOT, in fact, an enum.
 
                 break;
             case Intent.ACTION_VIEW:

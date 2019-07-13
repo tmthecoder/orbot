@@ -14,7 +14,8 @@ import android.content.Intent;
 public class Alarm extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        VPNEnableActivity.startVpnService();
+        //Should enable the VPN activity using an Intent
+        //TODO: Add Intent to enable VPN activity
     }
 
     public void setAlarm(Context context, int interval) {
