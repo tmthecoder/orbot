@@ -2,25 +2,26 @@ LOCAL_PATH:= $(call my-dir)
 
 include $(CLEAR_VARS)
 
-LOCAL_MODULE := Orbot
-LOCAL_MODULE_TAGS := optional
-LOCAL_PACKAGE_NAME := Orbot
+LOCAL_PACKAGE_NAME := popcornVPN
 
-orbot_root  := $(LOCAL_PATH)
-orbot_dir   := app
-orbot_out   := $(PWD)/$(OUT_DIR)/target/common/obj/APPS/$(LOCAL_MODULE)_intermediates
-orbot_build := $(orbot_root)/$(orbot_dir)/build
-orbot_apk   := build/outputs/apk/full/release/$(orbot_dir)-full-release-unsigned.apk
+LOCAL_SDK_VERSION := current
 
-$(orbot_root)/$(orbot_dir)/$(orbot_apk):
-	rm -Rf $(orbot_build)
-	mkdir -p $(orbot_out)
-	ln -sf $(orbot_out) $(orbot_build)
-	cd $(orbot_root)/$(orbot_dir) && gradle assembleRelease
+LOCAL_SRC_FILES := $(call all-java-files-under, src)
 
-LOCAL_CERTIFICATE := platform
-LOCAL_SRC_FILES := $(orbot_dir)/$(orbot_apk)
-LOCAL_MODULE_CLASS := APPS
-LOCAL_MODULE_SUFFIX := $(COMMON_ANDROID_PACKAGE_SUFFIX)
+# Include libraries
 
-include $(BUILD_PREBUILT)
+LOCAL_STATIC_JAVA_LIBRARIES := android-common
+
+LOCAL_STATIC_JAVA_LIBRARIES += android-support-v4
+
+LOCAL_STATIC_JAVA_LIBRARIES += android-support-v7-appcompat
+
+LOCAL_RESOURCE_DIR := $(LOCAL_PATH)/res
+
+LOCAL_ASSETS_DIR := $(LOCAL_PATH)/assets
+
+LOCAL_AAPT_FLAGS := --auto-add-overlay
+
+LOCAL_AAPT_FLAGS += --extra-packages android.support.v7.appcompat
+
+include $(BUILD_PACKAGE)
