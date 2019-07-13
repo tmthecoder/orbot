@@ -7,17 +7,22 @@ package org.hackSugar.hopper;
 import android.annotation.TargetApi;
 import android.app.ActivityManager;
 import android.content.Context;
+import android.graphics.drawable.Icon;
 import android.os.Build;
 import android.service.quicksettings.Tile;
 import android.service.quicksettings.TileService;
 import android.content.Intent;
+import android.util.Log;
+
 import org.torproject.android.OrbotMainActivity;
+import org.torproject.android.R;
 import org.torproject.android.service.TorService;
+import org.torproject.android.service.TorServiceConstants;
 
 
 /**
- * @author Connor McDermid
- * Contact me with issues at connor.mcdermid@mcvts.org
+ * @author Tejas Mehta, Connor McDermid
+ * Contact us with issues at ththecoder@gmail.com OR connor.mcdermid@mcvts.org
  * This class builds a Quick Settings tile for use on the Android Quick Settings menu.
  * The tile is set to the "Unavailable" state when the device is not unlocked, for security purposes,
  * although this will not disable the Tor VPN.
@@ -26,18 +31,26 @@ import org.torproject.android.service.TorService;
 public class HSTileService extends TileService {
 
 
-    Tile tile;
-
-
     @Override
     public void onClick() {
         super.onClick();
 
-        //Called when tile clicked
-
-        Intent torStartIntent = new Intent(HSTileService.this, OrbotMainActivity.class);
-        torStartIntent.setAction("org.torproject.android.START_TOR");
-        startActivity(torStartIntent);
+        //onClick
+        Tile tile = getQsTile();
+        if (tile.getState() == Tile.STATE_INACTIVE) {
+            //Called when tile clicked if inactive
+            tile.setState(Tile.STATE_ACTIVE);
+            tile.updateTile();
+            Intent torService = new Intent(getApplicationContext(), TorService.class);
+            torService.setAction("org.torproject.android.intent.action.START");
+            startService(torService);
+        } else {
+            //Called when tile clicked if inactive
+            tile.setState(Tile.STATE_INACTIVE);
+            tile.updateTile();
+            Intent torService = new Intent(getApplicationContext(), TorService.class);
+            stopService(torService);
+        }
     }
 
     @Override
@@ -54,7 +67,6 @@ public class HSTileService extends TileService {
         //While I'm sure you get the point, for documentation purposes I must state that this is called when the tile
         // is added.
 
-        tile = getQsTile();
     }
 
     @Override
@@ -63,20 +75,13 @@ public class HSTileService extends TileService {
 
 
         //This is called when the tile becomes visible.
-
         if (isTorServiceRunning()) {
-            tile.setLabel("Tor");
-            tile.setContentDescription("Activates the Tor VPN");
-            if (isSecure()) {
-                tile.setState(Tile.STATE_UNAVAILABLE);
-                tile.updateTile();
-                return;
-            }
-            if (isTorServiceRunning()) {
-                tile.setState(Tile.STATE_ACTIVE);
-            } else {
-                tile.setState(Tile.STATE_INACTIVE);
-            }
+            Tile tile = getQsTile();
+            tile.setState(Tile.STATE_ACTIVE);
+            tile.updateTile();
+        } else {
+            Tile tile = getQsTile();
+            tile.setState(Tile.STATE_INACTIVE);
             tile.updateTile();
         }
 
@@ -86,7 +91,6 @@ public class HSTileService extends TileService {
     @Override
     public void onStopListening() {
         super.onStopListening();
-
         //This is called when the tile is no longer visible.
     }
 

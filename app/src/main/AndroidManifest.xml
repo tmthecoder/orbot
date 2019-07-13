@@ -96,8 +96,8 @@
         </service>
         <service
             android:name="org.hackSugar.hopper.HSTileService"
-            android:icon="@drawable/ic_stat_tor"
-            android:label="@string/tor_version"
+            android:icon="@drawable/ic_onion_02"
+            android:label="@string/torify"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
 
             <intent-filter>

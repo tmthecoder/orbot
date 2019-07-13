@@ -380,6 +380,8 @@ public class TorService extends Service implements TorServiceConstants, OrbotCon
             String action = mIntent.getAction();
 
             if (action != null) {
+                Log.i("TOR", action);
+
                 if (action.equals(ACTION_START)) {
                     replyWithStatus(mIntent);
                     startTor();

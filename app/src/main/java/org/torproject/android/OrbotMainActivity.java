@@ -1157,7 +1157,7 @@ public class OrbotMainActivity extends AppCompatActivity
      * {@link TorServiceConstants#ACTION_START} {@link Intent} to
      * {@link TorService}
      */
-    private void startTor() {
+    public void startTor() {
         sendIntentToService(TorServiceConstants.ACTION_START);
         mTxtOrbotLog.setText("");
     }
